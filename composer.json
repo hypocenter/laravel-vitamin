@@ -16,7 +16,7 @@
     "issues": "https://github.com/hypocenter/laravel-vitamin/issues",
     "source": "https://github.com/hypocenter/laravel-vitamin"
   },
-  "autoload-dev": {
+  "autoload": {
     "psr-4": {
       "Hypocenter\\LaravelVitamin\\": "src/"
     }
