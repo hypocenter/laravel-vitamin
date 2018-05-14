@@ -20,5 +20,13 @@
     "psr-4": {
       "Hypocenter\\LaravelVitamin\\": "src/"
     }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Hypocenter\\LaravelVitamin\\Providers\\LaravelVitaminServiceProvider",
+        "Hypocenter\\LaravelVitamin\\ACL\\ACLServiceProvider"
+      ]
+    }
   }
 }
