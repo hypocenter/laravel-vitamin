@@ -1,6 +1,7 @@
 {
   "name": "hypocenter/laravel-vitamin",
   "description": "Vitamins for Laravel",
+  "license": "MIT",
   "type": "library",
   "require": {
     "php": "^7.1.3",
