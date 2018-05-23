@@ -71,7 +71,7 @@ abstract class EloquentRepository implements Repository, BootableInterface
         return $query;
     }
 
-    protected function new()
+    public function new()
     {
         return $this->model->newInstance();
     }
