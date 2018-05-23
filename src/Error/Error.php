@@ -16,4 +16,9 @@ abstract class Error extends Enum
     {
         return $this->value();
     }
+
+    public function createException()
+    {
+        return new ErrorException($this);
+    }
 }
