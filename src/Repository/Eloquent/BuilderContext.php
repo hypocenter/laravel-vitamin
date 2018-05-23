@@ -11,6 +11,8 @@ class BuilderContext
     private $lockForUpdate = false;
     private $with          = null;
     private $paginate      = null;
+    private $useCursor     = false;
+
     /**
      * @var Criteria[]|callable[]
      */
@@ -88,5 +90,21 @@ class BuilderContext
     public function getCriteria()
     {
         return $this->criteria;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isUseCursor(): bool
+    {
+        return $this->useCursor;
+    }
+
+    /**
+     * @param bool $useCursor
+     */
+    public function setUseCursor(bool $useCursor): void
+    {
+        $this->useCursor = $useCursor;
     }
 }

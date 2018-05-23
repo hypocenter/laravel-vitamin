@@ -190,6 +190,12 @@ abstract class EloquentRepository implements Repository, BootableInterface
         return $this;
     }
 
+    public function useCursor()
+    {
+        $this->context()->setUseCursor(true);
+        return $this;
+    }
+
     /**
      * @param Criteria|Criteria[]|callable|callable[] $criteria
      *

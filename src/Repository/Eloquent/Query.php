@@ -59,12 +59,16 @@ class Query
     }
 
     /**
-     * @return LengthAwarePaginator|\Illuminate\Database\Eloquent\Collection|Model[]
+     * @return LengthAwarePaginator|\Illuminate\Database\Eloquent\Collection|Model[]|\Generator|mixed
      */
     public function all()
     {
         if ($this->context->getPaginate()) {
             return $this->builder->paginate(...$this->context->getPaginate());
+        }
+
+        if ($this->context->isUseCursor()) {
+            return $this->builder->cursor();
         }
 
         return $this->builder->get();
