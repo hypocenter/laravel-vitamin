@@ -122,6 +122,25 @@ abstract class EloquentRepository implements Repository, BootableInterface
         return $this->save($model, $data);
     }
 
+    final public function fill($model, $data)
+    {
+        assert($model instanceof Model);
+
+        $fillable = null;
+
+        if ($model->exists) {
+            $fillable = $this->fillableOnUpdate ?: $this->fillable ?: [];
+        } else if ($this->fillable) {
+            $fillable = $this->fillable;
+        }
+
+        $this->rpFillable->setValue($model, $fillable);
+
+        $model->fill($fillable ? array_only($data, $fillable) : $data);
+
+        return $model;
+    }
+
     /**
      * @param      $model
      * @param null $data
@@ -134,17 +153,7 @@ abstract class EloquentRepository implements Repository, BootableInterface
         assert($model instanceof Model);
 
         if (!is_null($data)) {
-            $fillable = null;
-
-            if ($model->exists) {
-                $fillable = $this->fillableOnUpdate ?: $this->fillable ?: null;
-            } else if ($this->fillable) {
-                $fillable = $this->fillable;
-            }
-
-            $this->rpFillable->setValue($model, $this->fillable ?: []);
-
-            $model->fill($fillable ? array_only($data, $fillable) : $data);
+            $this->fill($model, $data);
         }
 
         if ($this->validator) {
