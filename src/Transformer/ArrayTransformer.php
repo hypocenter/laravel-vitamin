@@ -9,24 +9,21 @@ class ArrayTransformer extends AbstractTransformer
 {
     public function transform()
     {
-        return $this->handle($this->get());
+        return (array)$this->handle($this->handleTransformer($this->getData()));
     }
 
-    protected function handle($value)
+    protected function handle($data)
     {
-        if (is_iterable($value)) {
-            foreach ($value as $k => $v) {
-                $value[$k] = static::create($v)->transform();
-                if ($value[$k] instanceof Arrayable) {
-                    $value[$k] = $value[$k]->toArray();
-                }
+        if (is_iterable($data)) {
+            foreach ($data as $k => $v) {
+                $data[$k] = $this->handle($this->handleTransformer($v));
             }
         }
 
-        if ($value instanceof Arrayable) {
-            $value = $value->toArray();
+        if ($data instanceof Arrayable) {
+            $data = $this->handle($data->toArray());
         }
 
-        return $value;
+        return $data;
     }
 }
