@@ -71,8 +71,10 @@ abstract class AbstractTransformer implements Transformer, \JsonSerializable
 
         if ($value instanceof Transformable) {
             $cls = $value->getTransformer();
-            /** @noinspection PhpUndefinedMethodInspection */
-            $value = $cls::create($value);
+            if ($cls !== get_called_class()) {
+                /** @noinspection PhpUndefinedMethodInspection */
+                $value = $cls::create($value);
+            }
         }
 
         if ($value instanceof Transformer) {
