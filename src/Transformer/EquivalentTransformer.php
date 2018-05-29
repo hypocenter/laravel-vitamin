@@ -2,11 +2,8 @@
 
 namespace Hypocenter\LaravelVitamin\Transformer;
 
-
-class EquivalentTransformer extends AbstractTransformer
-{
-    public function transform()
-    {
-        return $this->get();
-    }
-}
+/**
+ * Class EquivalentTransformer
+ * @deprecated use DefaultTransformer instead
+ */
+class EquivalentTransformer extends DefaultTransformer {}
