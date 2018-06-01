@@ -9,6 +9,13 @@ use Illuminate\Database\Eloquent\Builder;
 
 abstract class AbstractCriteria implements Criteria
 {
+    const OP_EQ   = 'eq';
+    const OP_LIKE = 'like';
+    const OP_GT   = 'gt';
+    const OP_GTE  = 'gte';
+    const OP_LT   = 'lt';
+    const OP_LTE  = 'lte';
+
     protected $searchable;
     /**
      * @var CriteriaParser
@@ -37,7 +44,7 @@ abstract class AbstractCriteria implements Criteria
                 $type  = null;
             }
 
-            if (!array_key_exists($field, $searches)) {
+            if (!$searches->has($field)) {
                 continue;
             }
 
@@ -62,7 +69,7 @@ abstract class AbstractCriteria implements Criteria
      */
     protected function search($builder, $field, $value = null, $type = null)
     {
-        $operator = 'eq';
+        $operator = static::OP_EQ;
 
         if (isset($type[0])) {
             $operator = $type[0];
@@ -72,32 +79,32 @@ abstract class AbstractCriteria implements Criteria
             $field = $type['map'];
         }
 
-        if ($operator === 'eq') {
+        if ($operator === static::OP_EQ) {
             $builder->where($field, $value);
             return;
         }
 
-        if ($operator === 'like') {
+        if ($operator === static::OP_LIKE) {
             $builder->where($field, 'like', "%$value%");
             return;
         }
 
-        if ($operator === 'gt') {
+        if ($operator === static::OP_GT) {
             $builder->where($field, '>', $value);
             return;
         }
 
-        if ($operator === 'gte') {
+        if ($operator === static::OP_GTE) {
             $builder->where($field, '>=', $value);
             return;
         }
 
-        if ($operator === 'lt') {
+        if ($operator === static::OP_LT) {
             $builder->where($field, '<', $value);
             return;
         }
 
-        if ($operator === 'lte') {
+        if ($operator === static::OP_LTE) {
             $builder->where($field, '<=', $value);
             return;
         }
