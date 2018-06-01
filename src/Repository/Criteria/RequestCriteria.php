@@ -7,6 +7,14 @@ class RequestCriteria extends AbstractCriteria
 {
     protected $field = 's';
 
+    /**
+     * @param null $searchable
+     * @param null $field
+     *
+     * @return RequestCriteria|static
+     *
+     * @deprecated use set() instead, will remove in v0.2.0
+     */
     public function create($searchable = null, $field = null)
     {
         $c = new static();
@@ -20,6 +28,19 @@ class RequestCriteria extends AbstractCriteria
         }
 
         return $c;
+    }
+
+    public function set($searchable = null, $field = null)
+    {
+        if ($searchable) {
+            $this->setSearchable($searchable);
+        }
+
+        if ($field) {
+            $this->setField($field);
+        }
+
+        return $this;
     }
 
     public function setField($field)
