@@ -7,9 +7,8 @@ class DefaultCriteria extends AbstractCriteria
 {
     protected $searches;
 
-    public function set($searchable, $searches)
+    public function set($searches)
     {
-        $this->setSearchable($searchable);
         $this->searches = $searches;
         return $this;
     }
