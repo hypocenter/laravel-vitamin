@@ -15,11 +15,11 @@ interface Repository
 
     public function update($id, $data);
 
-    public function save($model, $data = null): bool;
+    public function save($model, $data = null);
 
     public function exists(array $where): bool;
 
-    public function delete($id): bool;
+    public function delete($id);
 
     /**
      * @return static

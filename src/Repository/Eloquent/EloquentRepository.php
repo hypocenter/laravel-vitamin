@@ -148,7 +148,7 @@ abstract class EloquentRepository implements Repository, BootableInterface
      * @return bool|Model
      * @throws \Illuminate\Validation\ValidationException
      */
-    final public function save($model, $data = null): bool
+    final public function save($model, $data = null)
     {
         assert($model instanceof Model);
 
@@ -169,7 +169,7 @@ abstract class EloquentRepository implements Repository, BootableInterface
      * @return bool|null|Model
      * @throws \Exception
      */
-    final public function delete($id): bool
+    final public function delete($id)
     {
         $model = $id instanceof Model ? $id : $this->query()->findOrFail($id);
         $res = $model->delete();
