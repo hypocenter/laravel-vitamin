@@ -6,6 +6,7 @@ namespace Hypocenter\LaravelVitamin\Repository\Criteria;
 use Hypocenter\LaravelVitamin\Repository\Contracts\Criteria;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 
 abstract class AbstractCriteria implements Criteria
 {
@@ -121,6 +122,14 @@ abstract class AbstractCriteria implements Criteria
 
         if ($operator === static::OP_END_WITH) {
             $builder->where($field, 'like', "%$value");
+            return;
+        }
+
+        if ($operator === static::OP_CUSTOM) {
+            $method = 'custom' . ucfirst(Str::camel($field));
+            if (method_exists($this, $method)) {
+                $this->$method($builder, $value);
+            }
             return;
         }
     }
