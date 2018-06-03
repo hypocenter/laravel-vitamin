@@ -95,6 +95,17 @@ abstract class AbstractCriteria implements Criteria
 
         if ($operator === static::OP_IN) {
             $builder->whereIn($field, Arr::wrap($value));
+            return;
+        }
+
+        if ($operator === static::OP_START_WITH) {
+            $builder->where($field, 'like', "$value%");
+            return;
+        }
+
+        if ($operator === static::OP_END_WITH) {
+            $builder->where($field, 'like', "%$value");
+            return;
         }
     }
 }
