@@ -5,6 +5,7 @@ namespace Hypocenter\LaravelVitamin\Repository\Criteria;
 
 use Hypocenter\LaravelVitamin\Repository\Contracts\Criteria;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Arr;
 
 abstract class AbstractCriteria implements Criteria
 {
@@ -14,6 +15,7 @@ abstract class AbstractCriteria implements Criteria
     const OP_GTE  = 'gte';
     const OP_LT   = 'lt';
     const OP_LTE  = 'lte';
+    const OP_IN   = 'in';
 
     protected $searchable;
 
@@ -97,6 +99,10 @@ abstract class AbstractCriteria implements Criteria
         if ($operator === static::OP_LTE) {
             $builder->where($field, '<=', $value);
             return;
+        }
+
+        if ($operator === static::OP_IN) {
+            $builder->whereIn($field, Arr::wrap($value));
         }
     }
 }
