@@ -20,6 +20,22 @@ abstract class AbstractCriteria implements Criteria
     }
 
     /**
+     * @param $keys string|array
+     */
+    public function only($keys)
+    {
+        $this->searchable = Arr::only($this->searchable, $keys);
+    }
+
+    /**s
+     * @param $keys string|array
+     */
+    public function except($keys)
+    {
+        $this->searchable = Arr::only($this->searchable, $keys);
+    }
+
+    /**
      * @param Builder $builder
      */
     public function apply($builder)
