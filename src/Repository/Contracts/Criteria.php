@@ -12,6 +12,7 @@ interface Criteria
     const OP_LT   = 'lt';
     const OP_LTE  = 'lte';
     const OP_IN   = 'in';
-    
+    CONST OP_CST  = 'custom';
+
     public function apply($builder);
 }
