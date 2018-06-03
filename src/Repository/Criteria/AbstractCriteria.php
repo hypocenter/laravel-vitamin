@@ -22,18 +22,25 @@ abstract class AbstractCriteria implements Criteria
 
     /**
      * @param $keys string|array
+     *
+     * @return $this|static
      */
     public function only($keys)
     {
         $this->searchable = Arr::only($this->searchable, $keys);
+        return $this;
     }
 
     /**s
+     *
      * @param $keys string|array
+     *
+     * @return $this|static
      */
     public function except($keys)
     {
         $this->searchable = Arr::only($this->searchable, $keys);
+        return $this;
     }
 
     /**
