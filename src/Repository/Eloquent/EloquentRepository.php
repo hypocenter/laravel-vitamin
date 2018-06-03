@@ -207,12 +207,20 @@ abstract class EloquentRepository implements Repository, BootableInterface
 
     /**
      * @param Criteria|Criteria[]|callable|callable[] $criteria
+     * @param bool                                    $append
      *
      * @return $this|static
      */
-    public function criteria($criteria)
+    public function criteria($criteria, $append = false)
     {
-        $this->context()->setCriteria(Arr::wrap($criteria));
+        if ($append) {
+            $context = $this->context();
+            $criteria = array_merge($context->getCriteria(), Arr::wrap($criteria));
+            $this->context()->setCriteria($criteria);
+        } else {
+            $this->context()->setCriteria(Arr::wrap($criteria));
+        }
+
         return $this;
     }
 }
