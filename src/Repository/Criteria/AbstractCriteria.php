@@ -9,14 +9,6 @@ use Illuminate\Support\Arr;
 
 abstract class AbstractCriteria implements Criteria
 {
-    const OP_EQ   = 'eq';
-    const OP_LIKE = 'like';
-    const OP_GT   = 'gt';
-    const OP_GTE  = 'gte';
-    const OP_LT   = 'lt';
-    const OP_LTE  = 'lte';
-    const OP_IN   = 'in';
-
     protected $searchable;
 
     abstract protected function receive();
