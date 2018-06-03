@@ -3,9 +3,20 @@
 namespace Hypocenter\LaravelVitamin\Repository\Criteria;
 
 
+use Hypocenter\LaravelVitamin\Repository\Contracts\CriteriaParser;
+
 class RequestCriteria extends AbstractCriteria
 {
     protected $field = 's';
+    /**
+     * @var CriteriaParser
+     */
+    private $parser;
+
+    public function __construct(CriteriaParser $parser)
+    {
+        $this->parser = $parser;
+    }
 
     /**
      * @param null $searchable
@@ -17,7 +28,7 @@ class RequestCriteria extends AbstractCriteria
      */
     public function create($searchable = null, $field = null)
     {
-        $c = new static();
+        $c = resolve(get_called_class());
 
         if ($searchable) {
             $c->setSearchable($searchable);
@@ -51,6 +62,6 @@ class RequestCriteria extends AbstractCriteria
 
     protected function receive()
     {
-        return request($this->field);
+        return $this->parser->parse(request($this->field));
     }
 }

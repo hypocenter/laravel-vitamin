@@ -4,7 +4,6 @@ namespace Hypocenter\LaravelVitamin\Repository\Criteria;
 
 
 use Hypocenter\LaravelVitamin\Repository\Contracts\Criteria;
-use Hypocenter\LaravelVitamin\Repository\Contracts\CriteriaParser;
 use Illuminate\Database\Eloquent\Builder;
 
 abstract class AbstractCriteria implements Criteria
@@ -17,10 +16,6 @@ abstract class AbstractCriteria implements Criteria
     const OP_LTE  = 'lte';
 
     protected $searchable;
-    /**
-     * @var CriteriaParser
-     */
-    protected $parser;
 
     abstract protected function receive();
 
@@ -35,7 +30,7 @@ abstract class AbstractCriteria implements Criteria
      */
     public function apply($builder)
     {
-        $searches = $this->parse($this->receive());
+        $searches = $this->receive();
 
         foreach ($this->searchable as $field => $type) {
 
@@ -54,11 +49,6 @@ abstract class AbstractCriteria implements Criteria
 
             $this->search($builder, $field, $searches[$field], $type);
         }
-    }
-
-    protected function parse($value)
-    {
-        return resolve(CriteriaParser::class)->parse($value);
     }
 
     /**
