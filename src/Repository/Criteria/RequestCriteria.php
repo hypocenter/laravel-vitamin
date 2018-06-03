@@ -5,7 +5,7 @@ namespace Hypocenter\LaravelVitamin\Repository\Criteria;
 
 use Hypocenter\LaravelVitamin\Repository\Contracts\CriteriaParser;
 
-class RequestCriteria extends AbstractCriteria implements CriteriaParser
+class RequestCriteria extends AbstractCriteria
 {
     protected $field = 's';
     /**
@@ -60,14 +60,13 @@ class RequestCriteria extends AbstractCriteria implements CriteriaParser
         return $this;
     }
 
-    public function parse($value)
+    public function get()
     {
-        $this->parser->parse($value);
+        return $this->receive();
     }
-
 
     protected function receive()
     {
-        return $this->parse(request($this->field));
+        return $this->parser->parse(request($this->field));
     }
 }
