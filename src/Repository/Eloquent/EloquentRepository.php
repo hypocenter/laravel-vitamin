@@ -211,7 +211,7 @@ abstract class EloquentRepository implements Repository, BootableInterface
      *
      * @return $this|static
      */
-    public function criteria($criteria, $append = false)
+    public function criteria($criteria, $append = true)
     {
         if ($append) {
             $context = $this->context();
