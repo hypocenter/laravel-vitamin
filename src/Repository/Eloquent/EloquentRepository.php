@@ -113,7 +113,7 @@ abstract class EloquentRepository implements Repository, BootableInterface
      * @param $id
      * @param $data
      *
-     * @return bool
+     * @return bool|Model
      * @throws \Illuminate\Validation\ValidationException
      */
     final public function update($id, $data)
@@ -145,7 +145,7 @@ abstract class EloquentRepository implements Repository, BootableInterface
      * @param      $model
      * @param null $data
      *
-     * @return bool
+     * @return bool|Model
      * @throws \Illuminate\Validation\ValidationException
      */
     final public function save($model, $data = null): bool
@@ -160,19 +160,20 @@ abstract class EloquentRepository implements Repository, BootableInterface
             $this->validator->validate($model, Validator::SCENE_SAVE);
         }
 
-        return $model->save();
+        return $model->save() ? $model : false;
     }
 
     /**
      * @param $id
      *
-     * @return bool|null
+     * @return bool|null|Model
      * @throws \Exception
      */
     final public function delete($id): bool
     {
         $model = $id instanceof Model ? $id : $this->query()->findOrFail($id);
-        return $model->delete();
+        $res = $model->delete();
+        return $res ? $model : $res;
     }
 
     public function lockForUpdate()
