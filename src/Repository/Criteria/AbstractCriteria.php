@@ -44,7 +44,7 @@ abstract class AbstractCriteria implements Criteria
                 $type  = null;
             }
 
-            if (!$searches->has($field)) {
+            if (!isset($searches[$field])) {
                 continue;
             }
 
