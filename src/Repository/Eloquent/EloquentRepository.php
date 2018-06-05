@@ -225,11 +225,4 @@ abstract class EloquentRepository implements Repository, BootableInterface
 
         return $this;
     }
-
-    public function orderBy($field, $direction = 'asc')
-    {
-        return $this->criteria(function (Builder $builder) use ($field, $direction) {
-            $builder->orderBy($field, $direction);
-        });
-    }
 }
