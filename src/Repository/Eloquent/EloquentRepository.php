@@ -9,6 +9,7 @@ use Hypocenter\LaravelVitamin\Repository\Contracts\Repository;
 use Hypocenter\LaravelVitamin\Validator\AbstractValidator;
 use Hypocenter\LaravelVitamin\Validator\Contracts\Validator;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Arr;
 
 abstract class EloquentRepository implements Repository, BootableInterface
@@ -223,5 +224,12 @@ abstract class EloquentRepository implements Repository, BootableInterface
         }
 
         return $this;
+    }
+
+    public function orderBy($field, $direction = 'asc')
+    {
+        return $this->criteria(function (Builder $builder) use ($field, $direction) {
+            $builder->orderBy($field, $direction);
+        });
     }
 }
