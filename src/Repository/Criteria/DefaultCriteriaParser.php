@@ -23,7 +23,7 @@ class DefaultCriteriaParser implements CriteriaParser
         }
 
         foreach (explode(';', $value) as $v) {
-            $v = explode(':', $v);
+            $v = explode(':', $v, 2);
             if (count($v) !== 2 || empty($v[0]) || $v[1] === '') {
                 continue;
             }
