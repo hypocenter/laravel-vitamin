@@ -87,6 +87,24 @@ abstract class EloquentRepository implements Repository, BootableInterface
         return $this->query()->findOrFail($id);
     }
 
+    public function wrap($idOrModel)
+    {
+        if ($idOrModel instanceof Model) {
+            return $idOrModel;
+        }
+
+        return $this->find($idOrModel);
+    }
+
+    public function wrapOrFail($idOrModel)
+    {
+        if ($idOrModel instanceof Model) {
+            return $idOrModel;
+        }
+
+        return $this->findOrFail($idOrModel);
+    }
+
     public function all()
     {
         return $this->query()->all();
