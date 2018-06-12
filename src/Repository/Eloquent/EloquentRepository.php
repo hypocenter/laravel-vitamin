@@ -129,15 +129,15 @@ abstract class EloquentRepository implements Repository, BootableInterface
     }
 
     /**
-     * @param $id
+     * @param string|int|Model $idOrModel
      * @param $data
      *
      * @return bool|Model
      * @throws \Illuminate\Validation\ValidationException
      */
-    final public function update($id, $data)
+    final public function update($idOrModel, $data)
     {
-        $model = $this->query()->findOrFail($id);
+        $model = $this->wrapOrFail($idOrModel);
         return $this->save($model, $data);
     }
 
