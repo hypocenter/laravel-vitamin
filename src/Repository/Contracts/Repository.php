@@ -15,7 +15,7 @@ interface Repository
 
     public function wrapOrFail($idOrModel);
 
-    public function findOrNew($data);
+    public function findOrNew($id, $columns = ['*']);
 
     public function create($data);
 
