@@ -15,6 +15,8 @@ interface Repository
 
     public function wrapOrFail($idOrModel);
 
+    public function findOrNew($data);
+
     public function create($data);
 
     public function update($idOrModel, $data);

@@ -105,6 +105,11 @@ abstract class EloquentRepository implements Repository, BootableInterface
         return $this->findOrFail($idOrModel);
     }
 
+    public function findOrNew($data)
+    {
+        return $this->findOrNew($data);
+    }
+
     public function all()
     {
         return $this->query()->all();
