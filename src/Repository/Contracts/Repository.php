@@ -5,6 +5,8 @@ namespace Hypocenter\LaravelVitamin\Repository\Contracts;
 
 interface Repository
 {
+    public function new();
+
     public function validate($model, $scene = null);
 
     public function find($id, $columns = ['*']);
