@@ -12,11 +12,19 @@ abstract class AbstractCriteria implements Criteria
 {
     protected $searchable;
 
+    protected $prefix;
+
     abstract protected function receive();
 
     public function setSearchable(array $searchable = null)
     {
         $this->searchable = (array)$searchable;
+        return $this;
+    }
+
+    public function setPrefix($prefix)
+    {
+        $this->prefix = $prefix;
         return $this;
     }
 
@@ -65,7 +73,7 @@ abstract class AbstractCriteria implements Criteria
                 $type = [$type];
             }
 
-            $this->search($builder, $field, $searches[$field], $type);
+            $this->search($builder, $this->getField($field), $searches[$field], $type);
         }
     }
 
@@ -139,5 +147,10 @@ abstract class AbstractCriteria implements Criteria
             }
             return;
         }
+    }
+
+    protected function getField($field)
+    {
+        return $this->prefix ? "{$this->prefix}.$field" : $field;
     }
 }
