@@ -119,11 +119,12 @@ class ConfigBasedProvider implements Provider
             $s = strpos($rule, '*');
 
             if ($s === false) {
-                if (isset($this->rules[$rule])) {
-                    $rules[] = $this->rules[$rule];
+                if (!isset($this->rules[$rule])) {
                     trigger_error('ACL: invalid user rule ' . $rule, E_USER_WARNING);
                     continue;
                 }
+
+                $rules[] = $this->rules[$rule];
             } else if ($s === 0) {
                 return $this->getRules(); // 超级权限
             } else {
