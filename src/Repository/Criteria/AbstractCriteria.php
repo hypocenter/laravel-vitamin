@@ -73,7 +73,7 @@ abstract class AbstractCriteria implements Criteria
                 $type = [$type];
             }
 
-            $this->search($builder, $this->getField($field), $searches[$field], $type);
+            $this->search($builder, $field, $searches[$field], $type);
         }
     }
 
@@ -96,47 +96,47 @@ abstract class AbstractCriteria implements Criteria
         }
 
         if ($operator === static::OP_EQ) {
-            $builder->where($field, $value);
+            $builder->where($this->getField($field), $value);
             return;
         }
 
         if ($operator === static::OP_LIKE) {
-            $builder->where($field, 'like', "%$value%");
+            $builder->where($this->getField($field), 'like', "%$value%");
             return;
         }
 
         if ($operator === static::OP_GT) {
-            $builder->where($field, '>', $value);
+            $builder->where($this->getField($field), '>', $value);
             return;
         }
 
         if ($operator === static::OP_GTE) {
-            $builder->where($field, '>=', $value);
+            $builder->where($this->getField($field), '>=', $value);
             return;
         }
 
         if ($operator === static::OP_LT) {
-            $builder->where($field, '<', $value);
+            $builder->where($this->getField($field), '<', $value);
             return;
         }
 
         if ($operator === static::OP_LTE) {
-            $builder->where($field, '<=', $value);
+            $builder->where($this->getField($field), '<=', $value);
             return;
         }
 
         if ($operator === static::OP_IN) {
-            $builder->whereIn($field, Arr::wrap($value));
+            $builder->whereIn($this->getField($field), Arr::wrap($value));
             return;
         }
 
         if ($operator === static::OP_START_WITH) {
-            $builder->where($field, 'like', "$value%");
+            $builder->where($this->getField($field), 'like', "$value%");
             return;
         }
 
         if ($operator === static::OP_END_WITH) {
-            $builder->where($field, 'like', "%$value");
+            $builder->where($this->getField($field), 'like', "%$value");
             return;
         }
 
