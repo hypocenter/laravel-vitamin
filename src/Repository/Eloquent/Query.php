@@ -93,4 +93,18 @@ class Query
 
         return $res;
     }
+
+    public function __get($name)
+    {
+        if ($this->hasJoin()) {
+            return $this->builder->qualifyColumn($name);
+        } else {
+            return $name;
+        }
+    }
+
+    protected function hasJoin()
+    {
+        return count((array) $this->builder->getQuery()->joins) > 0;
+    }
 }
