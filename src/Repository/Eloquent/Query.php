@@ -59,9 +59,11 @@ class Query
     }
 
     /**
+     * @param null $columns
+     *
      * @return LengthAwarePaginator|\Illuminate\Database\Eloquent\Collection|Model[]|\Generator|mixed
      */
-    public function all()
+    public function all($columns = null)
     {
         if ($this->context->getPaginate()) {
             return $this->builder->paginate(...$this->context->getPaginate());
@@ -71,7 +73,12 @@ class Query
             return $this->builder->cursor();
         }
 
-        return $this->builder->get();
+        if (is_null($columns)) {
+            $columns = count((array) $this->builder->getQuery()->joins) > 0 ?
+                [$this->builder->qualifyColumn('*')] : ['*'];
+        }
+
+        return $this->builder->get($columns);
     }
 
     public function __call($name, $arguments)
