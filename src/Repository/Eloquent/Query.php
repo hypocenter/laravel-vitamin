@@ -84,6 +84,11 @@ class Query
         return $this->builder->get();
     }
 
+    public function __get($name)
+    {
+        return $this->builder->qualifyColumn($name);
+    }
+
     public function __call($name, $arguments)
     {
         $res = ($this->builder)->$name(...$arguments);
