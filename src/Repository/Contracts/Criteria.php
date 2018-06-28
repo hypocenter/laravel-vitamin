@@ -16,5 +16,5 @@ interface Criteria
     const OP_END_WITH   = 'end_with';
     const OP_CUSTOM     = 'custom';
 
-    public function apply($builder);
+    public function apply($query);
 }

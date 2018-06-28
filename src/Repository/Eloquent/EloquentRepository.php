@@ -9,7 +9,6 @@ use Hypocenter\LaravelVitamin\Repository\Contracts\Repository;
 use Hypocenter\LaravelVitamin\Validator\AbstractValidator;
 use Hypocenter\LaravelVitamin\Validator\Contracts\Validator;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Arr;
 
 abstract class EloquentRepository implements Repository, BootableInterface
@@ -142,7 +141,7 @@ abstract class EloquentRepository implements Repository, BootableInterface
 
     /**
      * @param string|int|Model $idOrModel
-     * @param $data
+     * @param                  $data
      *
      * @return bool|Model
      * @throws \Illuminate\Validation\ValidationException
@@ -183,7 +182,7 @@ abstract class EloquentRepository implements Repository, BootableInterface
     {
         assert($model instanceof Model);
 
-        if (!is_null($data)) {
+        if (! is_null($data)) {
             $this->fill($model, $data);
         }
 
@@ -203,7 +202,7 @@ abstract class EloquentRepository implements Repository, BootableInterface
     final public function delete($id)
     {
         $model = $id instanceof Model ? $id : $this->query()->findOrFail($id);
-        $res = $model->delete();
+        $res   = $model->delete();
         return $res ? $model : $res;
     }
 
@@ -246,7 +245,7 @@ abstract class EloquentRepository implements Repository, BootableInterface
     public function criteria($criteria, $append = true)
     {
         if ($append) {
-            $context = $this->context();
+            $context  = $this->context();
             $criteria = array_merge($context->getCriteria(), Arr::wrap($criteria));
             $this->context()->setCriteria($criteria);
         } else {

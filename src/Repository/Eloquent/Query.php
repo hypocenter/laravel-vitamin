@@ -50,9 +50,9 @@ class Query
         if ($this->context->getCriteria()) {
             foreach ($this->context->getCriteria() as $criteria) {
                 if (is_callable($criteria)) {
-                    $criteria($this->builder);
+                    $criteria($this);
                 } else {
-                    $criteria->apply($this->builder);
+                    $criteria->apply($this);
                 }
             }
         }
@@ -92,15 +92,6 @@ class Query
         }
 
         return $res;
-    }
-
-    public function __get($name)
-    {
-        if ($this->hasJoin()) {
-            return $this->builder->qualifyColumn($name);
-        } else {
-            return $name;
-        }
     }
 
     protected function hasJoin()

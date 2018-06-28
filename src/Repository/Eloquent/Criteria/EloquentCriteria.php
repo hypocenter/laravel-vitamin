@@ -58,9 +58,9 @@ class EloquentCriteria implements Criteria
     }
 
     /**
-     * @param Builder $builder
+     * @param Query $query
      */
-    public function apply($builder)
+    public function apply($query)
     {
         $searches = $this->searches;
 
@@ -79,17 +79,17 @@ class EloquentCriteria implements Criteria
                 $type = [$type];
             }
 
-            $this->search($builder, $field, $searches[$field], $type);
+            $this->search($query, $field, $searches[$field], $type);
         }
     }
 
     /**
-     * @param  Builder $builder
+     * @param  Query   $query
      * @param          $field
      * @param null     $value
      * @param null     $type
      */
-    protected function search($builder, $field, $value = null, $type = null)
+    protected function search($query, $field, $value = null, $type = null)
     {
         $operator = static::OP_EQ;
 
@@ -102,69 +102,69 @@ class EloquentCriteria implements Criteria
         }
 
         if ($operator === static::OP_EQ) {
-            $builder->where($this->getField($builder, $field), $value);
+            $query->where($this->getField($query, $field), $value);
             return;
         }
 
         if ($operator === static::OP_LIKE) {
-            $builder->where($this->getField($builder, $field), 'like', "%$value%");
+            $query->where($this->getField($query, $field), 'like', "%$value%");
             return;
         }
 
         if ($operator === static::OP_GT) {
-            $builder->where($this->getField($builder, $field), '>', $value);
+            $query->where($this->getField($query, $field), '>', $value);
             return;
         }
 
         if ($operator === static::OP_GTE) {
-            $builder->where($this->getField($builder, $field), '>=', $value);
+            $query->where($this->getField($query, $field), '>=', $value);
             return;
         }
 
         if ($operator === static::OP_LT) {
-            $builder->where($this->getField($builder, $field), '<', $value);
+            $query->where($this->getField($query, $field), '<', $value);
             return;
         }
 
         if ($operator === static::OP_LTE) {
-            $builder->where($this->getField($builder, $field), '<=', $value);
+            $query->where($this->getField($query, $field), '<=', $value);
             return;
         }
 
         if ($operator === static::OP_IN) {
-            $builder->whereIn($this->getField($builder, $field), Arr::wrap($value));
+            $query->whereIn($this->getField($query, $field), Arr::wrap($value));
             return;
         }
 
         if ($operator === static::OP_START_WITH) {
-            $builder->where($this->getField($builder, $field), 'like', "$value%");
+            $query->where($this->getField($query, $field), 'like', "$value%");
             return;
         }
 
         if ($operator === static::OP_END_WITH) {
-            $builder->where($this->getField($builder, $field), 'like', "%$value");
+            $query->where($this->getField($query, $field), 'like', "%$value");
             return;
         }
 
         if ($operator === static::OP_CUSTOM) {
             $method = 'custom' . ucfirst(Str::camel($field));
             if (method_exists($this, $method)) {
-                $this->$method($builder, $value);
+                $this->$method($query, $value);
             }
             return;
         }
     }
 
-    protected function getField(Builder $builder, $field)
+    protected function getField(Query $builder, $field)
     {
+        if (Str::contains($field, '.')) {
+            return $field;
+        }
+
         if ($this->prefix) {
             return "{$this->prefix}.$field";
         }
 
-        if (count((array) $builder->getQuery()->joins) > 0) {
-            return $builder->qualifyColumn($field);
-        }
-
-        return $field;
+        return $builder->qualifyColumn($field);
     }
 }

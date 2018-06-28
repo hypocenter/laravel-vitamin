@@ -20,10 +20,10 @@ class RequestCriteria extends EloquentCriteria
         $this->parser = $parser;
     }
 
-    public function apply($builder)
+    public function apply($query)
     {
         $this->searches = $this->parser->parse($this->field);
-        parent::apply($builder);
+        parent::apply($query);
     }
 
     public function setField($field)
