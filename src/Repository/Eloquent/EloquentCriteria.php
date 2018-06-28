@@ -1,6 +1,6 @@
 <?php
 
-namespace Hypocenter\LaravelVitamin\Repository\Criteria;
+namespace Hypocenter\LaravelVitamin\Repository\Eloquent;
 
 
 use Hypocenter\LaravelVitamin\Repository\Contracts\Criteria;
@@ -8,13 +8,19 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
-abstract class AbstractCriteria implements Criteria
+class EloquentCriteria implements Criteria
 {
     protected $searchable;
 
+    protected $searches;
+
     protected $prefix;
 
-    abstract protected function receive();
+    public function set($searches)
+    {
+        $this->searches = $searches;
+        return $this;
+    }
 
     public function setSearchable(array $searchable = null)
     {
@@ -56,7 +62,7 @@ abstract class AbstractCriteria implements Criteria
      */
     public function apply($builder)
     {
-        $searches = $this->receive();
+        $searches = $this->searches;
 
         foreach ($this->searchable as $field => $type) {
 
@@ -96,47 +102,47 @@ abstract class AbstractCriteria implements Criteria
         }
 
         if ($operator === static::OP_EQ) {
-            $builder->where($this->getField($field), $value);
+            $builder->where($this->getField($builder, $field), $value);
             return;
         }
 
         if ($operator === static::OP_LIKE) {
-            $builder->where($this->getField($field), 'like', "%$value%");
+            $builder->where($this->getField($builder, $field), 'like', "%$value%");
             return;
         }
 
         if ($operator === static::OP_GT) {
-            $builder->where($this->getField($field), '>', $value);
+            $builder->where($this->getField($builder, $field), '>', $value);
             return;
         }
 
         if ($operator === static::OP_GTE) {
-            $builder->where($this->getField($field), '>=', $value);
+            $builder->where($this->getField($builder, $field), '>=', $value);
             return;
         }
 
         if ($operator === static::OP_LT) {
-            $builder->where($this->getField($field), '<', $value);
+            $builder->where($this->getField($builder, $field), '<', $value);
             return;
         }
 
         if ($operator === static::OP_LTE) {
-            $builder->where($this->getField($field), '<=', $value);
+            $builder->where($this->getField($builder, $field), '<=', $value);
             return;
         }
 
         if ($operator === static::OP_IN) {
-            $builder->whereIn($this->getField($field), Arr::wrap($value));
+            $builder->whereIn($this->getField($builder, $field), Arr::wrap($value));
             return;
         }
 
         if ($operator === static::OP_START_WITH) {
-            $builder->where($this->getField($field), 'like', "$value%");
+            $builder->where($this->getField($builder, $field), 'like', "$value%");
             return;
         }
 
         if ($operator === static::OP_END_WITH) {
-            $builder->where($this->getField($field), 'like', "%$value");
+            $builder->where($this->getField($builder, $field), 'like', "%$value");
             return;
         }
 
@@ -149,8 +155,16 @@ abstract class AbstractCriteria implements Criteria
         }
     }
 
-    protected function getField($field)
+    protected function getField(Builder $builder, $field)
     {
-        return $this->prefix ? "{$this->prefix}.$field" : $field;
+        if ($this->prefix) {
+            return "{$this->prefix}.$field";
+        }
+
+        if (count((array) $builder->getQuery()->joins) > 0) {
+            return $builder->getModel()->qualifyColumn($field);
+        }
+
+        return $field;
     }
 }
