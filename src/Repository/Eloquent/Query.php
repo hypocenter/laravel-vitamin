@@ -65,6 +65,14 @@ class Query
      */
     public function all($columns = null)
     {
+        if (is_null($columns)) {
+            $columns = $this->hasJoin() ?
+                $this->builder->qualifyColumn('*') :
+                ['*'];
+        }
+
+        $this->builder->select($columns);
+
         if ($this->context->getPaginate()) {
             return $this->builder->paginate(...$this->context->getPaginate());
         }
@@ -73,12 +81,7 @@ class Query
             return $this->builder->cursor();
         }
 
-        if (is_null($columns)) {
-            $columns = count((array) $this->builder->getQuery()->joins) > 0 ?
-                [$this->builder->qualifyColumn('*')] : ['*'];
-        }
-
-        return $this->builder->get($columns);
+        return $this->builder->get();
     }
 
     public function __call($name, $arguments)
