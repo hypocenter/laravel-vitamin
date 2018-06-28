@@ -162,7 +162,7 @@ class EloquentCriteria implements Criteria
         }
 
         if (count((array) $builder->getQuery()->joins) > 0) {
-            return $builder->getModel()->qualifyColumn($field);
+            return $builder->qualifyColumn($field);
         }
 
         return $field;
