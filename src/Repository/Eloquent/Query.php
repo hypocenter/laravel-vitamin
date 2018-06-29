@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @package Hypocenter\LaravelVitamin\EloquentRepository\Eloquent
  */
-class Query
+class Query implements \ArrayAccess
 {
     /**
      * @var Builder
@@ -78,11 +78,6 @@ class Query
         return $this->builder->get();
     }
 
-    public function __get($name)
-    {
-        return $this->builder->qualifyColumn($name);
-    }
-
     public function __call($name, $arguments)
     {
         $res = ($this->builder)->$name(...$arguments);
@@ -93,8 +88,31 @@ class Query
         return $res;
     }
 
+    public function offsetExists($offset)
+    {
+        return false;
+    }
+
+    public function offsetGet($offset)
+    {
+        if (is_numeric($offset)) {
+            return null;
+        }
+
+        return $this->builder->qualifyColumn($offset);
+    }
+
+    public function offsetSet($offset, $value)
+    {
+    }
+
+    public function offsetUnset($offset)
+    {
+    }
+
+
     protected function hasJoin()
     {
-        return count((array) $this->builder->getQuery()->joins) > 0;
+        return count((array)$this->builder->getQuery()->joins) > 0;
     }
 }
