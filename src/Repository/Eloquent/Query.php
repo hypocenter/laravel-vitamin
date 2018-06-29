@@ -63,7 +63,7 @@ class Query
      */
     public function all()
     {
-        if (empty($this->builder->getQuery()->columns) && $columns = $this->hasJoin()) {
+        if (empty($this->builder->getQuery()->columns) && $this->hasJoin()) {
             $this->builder->select([$this->builder->qualifyColumn('*')]);
         }
 
